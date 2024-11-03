@@ -3,13 +3,14 @@
 import { useState, useEffect, useRef } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
+// import { Input } from "@/components/ui/input"
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BrainCircuit, Zap, Target, Users, CheckCircle, ChevronDown, ChevronLeft, ChevronRight, Github, Linkedin } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useTheme } from "next-themes"
-import { MagicCard } from "@/components/ui/magic-card"
-import Marquee from "@/components/ui/marquee";
+// import { MagicCard } from "@/components/ui/magic-card"
+// import Marquee from "@/components/ui/marquee";
 import { Sun, Moon } from "lucide-react"
 import RetroGrid from "@/components/ui/retro-grid";
 import BlurIn from "@/components/ui/blur-in";
@@ -20,6 +21,7 @@ export function LandingPageComponent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [currentTeamMember, setCurrentTeamMember] = useState(0)
   const progressRef = useRef(null)
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   const [visibleSteps, setVisibleSteps] = useState(0)
   const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
@@ -44,7 +46,7 @@ export function LandingPageComponent() {
       setCurrentTeamMember((prev) => (prev + 1) % teamMembers.length)
     }, 5000)
     return () => clearInterval(interval)
-  }, [])
+  }, [teamMembers.length])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -433,7 +435,7 @@ export function LandingPageComponent() {
                   © 2024 VisionArc. All rights reserved.
                 </p>
                 <p className="text-xs xs:text-sm text-gray-400 text-center xs:text-left">
-                  Disclaimer: This website is not associated with an actual company but is part of the "Planspiel" web engineering project at the TU Chemnitz.
+                  Disclaimer: This website is not associated with an actual company but is part of the &quotPlanspiel&quot; web engineering project at the TU Chemnitz.
                 </p>
               </div>
               {/* <div className="flex gap-4">
