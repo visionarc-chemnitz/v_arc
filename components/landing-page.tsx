@@ -452,7 +452,7 @@ export function LandingPageComponent() {
                   © 2024 VisionArc. All rights reserved.
                 </p>
                 <p className="text-xs xs:text-sm text-gray-400 text-center xs:text-left">
-                  Disclaimer: This website is not associated with an actual company but is part of the &quotPlanspiel&quot; web engineering project at the TU Chemnitz.
+                  Disclaimer: This website is not associated with an actual company but is part of the &quot;Planspiel&quot; web engineering project at the TU Chemnitz.
                 </p>
               </div>
               {/* <div className="flex gap-4">
