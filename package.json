@@ -1,13 +1,9 @@
 {
-  "homepage": "https://visionarc-chemnitz.github.io/v_arc/",
-  "name": "visionarc-chemnitz.github.io",
   "name": "v_arc_landing-page",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
