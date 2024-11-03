@@ -25,6 +25,7 @@ export function LandingPageComponent() {
   const [visibleSteps, setVisibleSteps] = useState(0)
   const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
+  const [windowWidth, setWindowWidth] = useState(0)
 
   const teamMembers = [
     { name: "Eshwari Kangutkar", role: "Developer", image: "/assets/img/team/eshwari.png", github: "https://github.com/EshwariK", linkedin: "https://www.linkedin.com/in/eshwari-kangutkar" },
@@ -65,6 +66,17 @@ export function LandingPageComponent() {
     }
 
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    setWindowWidth(window.innerWidth)
+
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth)
+    }
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   const toggleTheme = () => {
@@ -233,7 +245,12 @@ export function LandingPageComponent() {
             </h2>
             <div className="relative px-6 sm:px-12">
               <div className="overflow-hidden">
-                <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentTeamMember * (window.innerWidth >= 768 ? 50 : 100)}%)` }}>
+                <div 
+                  className="flex transition-transform duration-500 ease-in-out" 
+                  style={{ 
+                    transform: mounted ? `translateX(-${currentTeamMember * (windowWidth >= 768 ? 50 : 100)}%)` : 'none'
+                  }}
+                >
                   {teamMembers.map((member, index) => (
                     <div key={index} className="w-full md:w-1/2 flex-shrink-0 px-4">
                       <Card className="max-w-sm mx-auto overflow-hidden h-full bg-card hover:shadow-xl transition-all duration-300">
@@ -276,14 +293,14 @@ export function LandingPageComponent() {
               </div>
               <button
                 className="absolute top-1/2 -left-4 transform -translate-y-1/2 bg-card/80 backdrop-blur-sm rounded-full p-2 shadow-lg hover:bg-card hover:scale-110 transition-all duration-200"
-                onClick={() => setCurrentTeamMember((prev) => (prev - 1 + Math.ceil(teamMembers.length / (window.innerWidth >= 768 ? 2 : 1))) % Math.ceil(teamMembers.length / (window.innerWidth >= 768 ? 2 : 1)))}
+                onClick={() => setCurrentTeamMember((prev) => (prev - 1 + Math.ceil(teamMembers.length / (windowWidth >= 768 ? 2 : 1))) % Math.ceil(teamMembers.length / (windowWidth >= 768 ? 2 : 1)))}
                 aria-label="Previous team member"
               >
                 <ChevronLeft className="h-6 w-6 text-foreground" />
               </button>
               <button
                 className="absolute top-1/2 -right-4 transform -translate-y-1/2 bg-card/80 backdrop-blur-sm rounded-full p-2 shadow-lg hover:bg-card hover:scale-110 transition-all duration-200"
-                onClick={() => setCurrentTeamMember((prev) => (prev + 1) % Math.ceil(teamMembers.length / (window.innerWidth >= 768 ? 2 : 1)))}
+                onClick={() => setCurrentTeamMember((prev) => (prev + 1) % Math.ceil(teamMembers.length / (windowWidth >= 768 ? 2 : 1)))}
                 aria-label="Next team member"
               >
                 <ChevronRight className="h-6 w-6 text-foreground" />
