@@ -26,11 +26,11 @@ export function LandingPageComponent() {
   return (
     <>
       <Hero />
-      <Solutions />
-      <Features />
+      {/* <Solutions /> */}
+      {/* <Features /> */}
       <Team windowWidth={windowWidth} />
-      <ProgressStepper />
-      <Testimonials />
+      {/* <ProgressStepper />
+      <Testimonials /> */}
     </>
   )
 }
