@@ -1,5 +1,5 @@
 // import Image from "next/image";
-import { LandingPageComponent } from "@/components/landing-page";
+import { LandingPageComponent } from "@/components/pages/landing-page";
 import { ThemeProvider } from "next-themes";
 
 export default function Home() {
