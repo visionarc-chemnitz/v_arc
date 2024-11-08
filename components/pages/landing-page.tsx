@@ -2,33 +2,22 @@
 
 import { useState, useEffect } from 'react'
 
-import Hero from '../sections/Hero'
-import Team from '../sections/Team'
-import Features from '../sections/Features'
-import Solutions from '../sections/Solutions'
-import Testimonials from '../sections/Testimonials'
-import ProgressStepper from '../sections/ProgressStepper'
+import Hero from '@/components/sections/Hero'
+import Team from '@/components/sections/Team'
+import Features from '@/components/sections/Features'
+import Solutions from '@/components/sections/Solutions'
+import Testimonials from '@/components/sections/Testimonials'
+import ProgressStepper from '@/components/sections/ProgressStepper'
+import { Team_swiper } from '@/components/sections/Team_swiper'
 
 export function LandingPageComponent() {
-  const [windowWidth, setWindowWidth] = useState(0)
-
-  useEffect(() => {
-    setWindowWidth(window.innerWidth)
-
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth)
-    }
-    window.addEventListener('resize', handleResize)
-
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
   return (
     <>
       <Hero />
       {/* <Solutions /> */}
       {/* <Features /> */}
-      <Team windowWidth={windowWidth} />
+      {/* <Team windowWidth={windowWidth} /> */}
+      <Team_swiper />
       {/* <ProgressStepper />
       <Testimonials /> */}
     </>
