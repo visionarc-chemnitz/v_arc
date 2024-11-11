@@ -31,7 +31,7 @@ export default function HeroSection() {
           />
           
           <p className="text-gray-400 text-lg sm:text-xl mb-8">
-            Unleash your creativity with VisionArc's AI-powered design tools.
+            Unleash your creativity with VisionArc&apos;s AI-powered design tools.
           </p>
 
           <button className="px-8 py-3 bg-white/10 backdrop-blur-sm text-white rounded-full 
