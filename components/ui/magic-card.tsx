@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
-
 import { cn } from "@/lib/utils";
 
 export interface MagicCardProps extends React.HTMLAttributes<HTMLDivElement> {
   gradientSize?: number;
   gradientColor?: string;
   gradientOpacity?: number;
+  onClick?: () => void;
 }
 
 export function MagicCard({
@@ -17,48 +17,72 @@ export function MagicCard({
   gradientSize = 200,
   gradientColor = "#262626",
   gradientOpacity = 0.8,
+  onClick,
 }: MagicCardProps) {
-  const mouseX = useMotionValue(-gradientSize);
-  const mouseY = useMotionValue(-gradientSize);
+  const [mounted, setMounted] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const mouseX = useMotionValue(gradientSize / 2);
+  const mouseY = useMotionValue(gradientSize / 2);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      const { left, top } = e.currentTarget.getBoundingClientRect();
-      mouseX.set(e.clientX - left);
-      mouseY.set(e.clientY - top);
+      if (!mounted) return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      mouseX.set(x);
+      mouseY.set(y);
     },
-    [mouseX, mouseY],
+    [mouseX, mouseY, mounted]
   );
 
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
   const handleMouseLeave = useCallback(() => {
-    mouseX.set(-gradientSize);
-    mouseY.set(-gradientSize);
+    setIsHovered(false);
+    mouseX.set(gradientSize / 2);
+    mouseY.set(gradientSize / 2);
   }, [mouseX, mouseY, gradientSize]);
 
-  useEffect(() => {
-    mouseX.set(-gradientSize);
-    mouseY.set(-gradientSize);
-  }, [mouseX, mouseY, gradientSize]);
+  const background = useMotionTemplate`
+    radial-gradient(
+      ${gradientSize}px circle at ${mouseX}px ${mouseY}px,
+      ${gradientColor},
+      transparent 80%
+    )
+  `;
 
   return (
     <div
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
       onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={cn(
         "group relative flex size-full overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900 border text-black dark:text-white",
-        className,
+        className
       )}
     >
-      <div className="relative z-10">{children}</div>
-      <motion.div
-        className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{
-          background: useMotionTemplate`
-            radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px, ${gradientColor}, transparent 100%)
-          `,
-          opacity: gradientOpacity,
-        }}
-      />
+      <div className="relative z-10 w-full">{children}</div>
+      {mounted && isHovered && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: gradientOpacity }}
+          exit={{ opacity: 0 }}
+          className="pointer-events-none absolute -inset-px rounded-xl"
+          style={{
+            background,
+          }}
+        />
+      )}
     </div>
   );
 }

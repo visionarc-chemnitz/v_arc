@@ -1,62 +1,78 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { Sun, Moon, ChevronDown } from "lucide-react"
 import { useTheme } from "next-themes"
 import Image from "next/image"
 import Link from "next/link"
 
-const navLinks = ["Features", "Solution", "Team", "Progress", "Testimonials"]
+const navLinks = [
+  { name: "Home", id: "home" },
+  { name: "About  ", id: "about" },
+  { name: "Team", id: "team" }
+]
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark')
   }
 
-  const renderThemeToggle = () => {
+  const renderThemeToggle = () => (
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={toggleTheme}
+      className="hover:bg-white/10 dark:hover:bg-black/10 transition-colors"
+    >
+      {mounted && (theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />)}
+    </Button>
+  )
 
-    return (
-      <Button
-        variant="ghost"
-        size="icon"
-        className="ml-4"
-        onClick={toggleTheme}
-      >
-        {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-      </Button>
-    )
-  }
-
+  // Only render logo after mounting
+  const logoSrc = mounted 
+    ? theme === 'dark' 
+      ? '/assets/img/logo/logo.png'
+      : '/assets/img/logo/logo.png'
+    : '/assets/img/logo/logo.png' // Default logo for SSR
 
   return (
     <>
-      <header className="fixed top-0 w-full px-3 xs:px-4 lg:px-6 h-14 xs:h-16 flex items-center bg-white dark:bg-background/30 backdrop-blur-2xl z-50 border-b border-gray-200 dark:border-white/20 shadow-[0_2px_10px_rgba(0,0,0,0.1)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.2)] supports-[backdrop-filter]:dark:bg-background/20">
+      <header className="fixed top-0 w-full px-3 xs:px-4 lg:px-6 h-14 xs:h-16 flex items-center bg-white/75 dark:bg-background/75 backdrop-blur-xl z-50 border-b border-gray-200/50 dark:border-white/10 shadow-[0_2px_10px_rgba(0,0,0,0.1)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.2)]">
         <Link className="flex items-center" href="">
           <Image
-            src={theme === 'dark' ? '/assets/img/vision_arc_logo_transparent.png' : '/assets/img/vision_arc_logo_transparent.png'}
+            src={logoSrc}
             alt="VisionArc Logo"
-            width={100}
-            height={80} 
-            className="h-auto w-auto"
+            width={32}
+            height={32}
             priority
           />
+          <span className="text-lg font-semibold">VisionArc</span>
         </Link>
         
         <nav className="ml-auto hidden md:flex items-center justify-end gap-8">
           {navLinks.map((item) => (
             <Link 
-              key={item} 
+              key={item.id} 
               className="text-sm font-medium text-muted-foreground hover:text-primary transition-all duration-300 relative group"
-              href={`#${item.toLowerCase()}`}
+              href={`#${item.id}`}
+              onClick={() => {
+                const section = document.getElementById(item.id);
+                section?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
-              <span className="relative z-10">{item}</span>
-              <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform origin-right group-hover:origin-left duration-300"></span>
-              <span className="absolute inset-0 bg-primary/10 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300"></span>
+              <span className="relative z-10">{item.name}</span>
+              <span className="absolute -inset-x-4 -inset-y-2 bg-primary/5 dark:bg-primary/10 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 ease-out"></span>
+              <span className="absolute -inset-x-4 -inset-y-2 bg-primary/5 dark:bg-primary/10 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 ease-out delay-100"></span>
+              <span className="absolute -inset-x-4 -inset-y-2 bg-primary/5 dark:bg-primary/10 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 ease-out delay-200"></span>
             </Link>
           ))}
         </nav>
@@ -75,15 +91,19 @@ export default function Header() {
       </header>
 
       {isMenuOpen && (
-        <div className="fixed top-14 xs:top-16 left-0 right-0 bg-background/95 backdrop-blur-md shadow-lg z-40 md:hidden">
+        <div className="fixed top-14 xs:top-16 left-0 right-0 bg-background/75 backdrop-blur-xl shadow-lg z-40 md:hidden">
           <nav className="flex flex-col p-4">
             {navLinks.map((item) => (
               <Link 
-                key={item} 
+                key={item.id} 
                 className="text-sm font-medium py-3 px-4 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-md transition-all duration-300 transform hover:translate-x-2" 
-                href={`#${item.toLowerCase()}`} 
+                href={`#${item.id}`} 
+                onClick={() => {
+                  const section = document.getElementById(item.id);
+                  section?.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
-                {item}
+                {item.name}
               </Link>
             ))}
           </nav>
@@ -91,4 +111,4 @@ export default function Header() {
       )}
     </>
   )
-} 
+}

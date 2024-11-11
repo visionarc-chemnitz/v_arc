@@ -20,7 +20,7 @@ const config: Config = {
   			'2xl': '1536px'
   		},
   		container: {
-  			center: true,
+  			center: 'true',
   			padding: {
   				DEFAULT: '1rem',
   				xs: '1rem',
@@ -127,13 +127,34 @@ const config: Config = {
   				'100%': {
   					'background-position': '200%'
   				}
+  			},
+  			'background-position-spin': {
+  				'0%': {
+  					backgroundPosition: 'top center'
+  				},
+  				'100%': {
+  					backgroundPosition: 'bottom center'
+  				}
+  			},
+  			shine: {
+  				'0%': {
+  					'background-position': '0% 0%'
+  				},
+  				'50%': {
+  					'background-position': '100% 100%'
+  				},
+  				to: {
+  					'background-position': '0% 0%'
+  				}
   			}
   		},
   		animation: {
   			marquee: 'marquee var(--duration) infinite linear',
   			'marquee-vertical': 'marquee-vertical var(--duration) linear infinite',
   			grid: 'grid 15s linear infinite',
-  			rainbow: 'rainbow var(--speed, 2s) infinite linear'
+  			rainbow: 'rainbow var(--speed, 2s) infinite linear',
+  			'background-position-spin': 'background-position-spin 3000ms infinite alternate',
+  			shine: 'shine var(--duration) infinite linear'
   		}
   	}
   },
